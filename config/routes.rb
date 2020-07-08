@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # ログイン機能の実装
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+
   namespace :admin do
     resources :users
   end

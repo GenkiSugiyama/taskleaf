@@ -2,13 +2,17 @@ class Admin::UsersController < ApplicationController
   def index
     @users = User.all
   end
-  
+
   def show
     @user = Users.find(params[:id])
   end
 
   def new
     @user = User.new
+  end
+
+  def edit
+    @user = User.find(params[:id])
   end
 
   def create
@@ -19,10 +23,6 @@ class Admin::UsersController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
-    @user = User.find(params[:id])
   end
 
   def update
