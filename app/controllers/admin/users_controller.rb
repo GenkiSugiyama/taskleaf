@@ -46,4 +46,9 @@ class Admin::UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :email, :admin, :password, :password_confirmation)
   end
+
+  def require_admin
+    # Userがもつadmin属性にアクセスしてadminフラグの有無をチェックみたいな感じ
+    redirect_to root_url unless current_user.admin?
+  end
 end

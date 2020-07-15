@@ -11,6 +11,10 @@ class Task < ApplicationRecord
 
   belongs_to :user
 
+  # scopeメソッドでよく利用するデータの絞り込み条件を任意の名前で利用することができる
+  # 以下は作成日時の新しい順に並べるための絞り込み条件を「recent」という名前のscopeとして利用できる
+  scope :recent, -> { order(created_at: :desc) }
+
   private
 
 # 検証用のメソッドはモデルクラス内でしか使わない（外部からは呼び出されない）
