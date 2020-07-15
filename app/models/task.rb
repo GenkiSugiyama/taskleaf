@@ -9,6 +9,8 @@ class Task < ApplicationRecord
   # このメソッドを検証用に使用するということを宣言する
   validate :validate_name_not_including_comma
 
+  belongs_to :user
+
   private
 
 # 検証用のメソッドはモデルクラス内でしか使わない（外部からは呼び出されない）
