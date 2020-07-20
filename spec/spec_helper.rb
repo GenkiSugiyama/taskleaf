@@ -21,7 +21,7 @@ RSpec.configure do |config|
 
   # SystemSpecを実行するドライバの設定 HeadlessChromeを使用
   config.before(:each, type: :system) do
-    driven_by :selenium_chrome_headlsee
+    driven_by :selenium_chrome_headless
   end
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
