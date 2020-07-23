@@ -63,6 +63,8 @@ describe 'タスク管理機能', type: :system do
 
   describe '新規作成機能' do
     let(:login_user) { user_a }
+    # 同じ処理内に複数回同じ名前のletを定義した場合はより下の階層に定義されたletが使用される（letの上書き）
+    let(:task_name) { '新規作成のテストを書く' }
 
     before do
       visit new_task_path
@@ -71,7 +73,6 @@ describe 'タスク管理機能', type: :system do
     end
 
     context '新規作成画面で名称を入力した時' do
-      let(:task_name) { '新規作成のテストを書く' }
 
       it '正常に登録される' do
         # have_selectorを使うとhtml内の要素をセレクタで指定できる
@@ -80,7 +81,7 @@ describe 'タスク管理機能', type: :system do
     end
 
     context '新規作成画面で名称を入力しなかった時' do
-      let(:task_name) { '' }
+      let(:task_name) { '' } #describe直下にtask_nameのletが定義されているが、名称を入力しなかったときのテスト実行時のtask_nameはこちらに上書きされる
 
       it 'エラーとなる' do
         # withinで指定した要素の中のみで期待した要素が存在するかをチェックする
