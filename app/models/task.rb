@@ -33,6 +33,37 @@ class Task < ApplicationRecord
     []
   end
 
+  # タスクデータをcsv出力するための処理を追加
+  # csvデータにどの属性をどの順番で出力するかを設定&それをcsv_attributesというメソッドで得られるように定義
+  def self.csv_attributes
+    ["name", "description", "created_at", "updated_at"]
+  end
+  def self.generate_csv
+    CSV.generate(headers: true) do |csv| # CSV.generateでCSVデータの文字列を生成
+      csv << csv_attributes # CSVの1行目をヘッダとして出力（属性名を見出しとしている）
+      all.each do |task|
+        csv << csv_attributes.map{ |attr| task.send(attr) }
+      end
+    end
+  end
+
+  # csvインポート用の処理を実装
+  def self.import(file)
+    # foreachでファイルを1行ずつ読み込み、headers: trueの指定で1行目はヘッダーとして無視
+    CSV.foreach(file.path, headers: true) do |row|
+      #ファイルの1行ごとにTaskインスタンスを生成
+      task = new
+      # Taskインスタンスの各属性に1行ごとの属性値を入れていく
+      # row→csvデータの1行内のデータ
+      # row.to_hashで「属性1の値, 属性2の値・・」となっているデータを
+      # 「{ 属性1のヘッダ名 ⇒ 属性1の値, 属性2のヘッダ名 ⇒ 属性2の値 }」のようなハッシュ値に変換している
+      # さらにハッシュ値にslice(引数)を使って引数に指定しているキーに対応するデータのみを
+      # csvから取り出して入力に使うようにしている
+      task.attributes = row.to_hash.slice("name", "description", "created_at", "updated_at")
+      task.save!
+    end
+  end
+
   private
 
 # 検証用のメソッドはモデルクラス内でしか使わない（外部からは呼び出されない）

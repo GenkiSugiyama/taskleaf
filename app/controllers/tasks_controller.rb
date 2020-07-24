@@ -10,6 +10,13 @@ class TasksController < ApplicationController
     # ransackを用いて検索機能を追加する
     @q = current_user.tasks.ransack(params[:q])
     @tasks = @q.result(distinct: true)
+
+    # indexアクション内にcsv出力機能を用意する
+    respond_to do |format|
+      format.html # htmlとしてアクセスされた場合はデフォルトのindex.html.slimを表示させる
+      # ↓csvとしてアクセスされた場合は@tasksのデータでcsvを出力しそのデータをブラウザからダウンロードできるようにする
+      format.csv { send_data @tasks.generate_csv, file_name: "tasks-#{Time.zone.now.strftime('%Y%m%d%S')}.csv" }
+    end
   end
 
   def show
@@ -57,6 +64,14 @@ class TasksController < ApplicationController
     @task.destroy
     redirect_to tasks_url, notice: "タスク「#{@task.name}」を削除しました。"
   end
+
+  # csvインポート用のアクションを追加
+  def import
+    # puts params[:file]
+    current_user.tasks.import(params[:file])
+    redirect_to tasks_url, notice: "タスクを追加しました"
+  end
+
   private
 
   def task_params
