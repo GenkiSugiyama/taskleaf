@@ -19,8 +19,21 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
+  # 新規登録画面→DBへの登録の間に確認画面を追加する用のアクション
+  def confirm_new
+    @task = current_user.tasks.new(task_params)
+    render :new unless @task.valid?
+  end
+
   def create
     @task = current_user.tasks.new(task_params)
+
+    # 確認画面で「戻る」ボタンが押されたときの処理を追加
+    if params[:back].present?
+      render :new
+      return
+    end
+
     if @task.save
       logger.debug "task: #{@task.attributes.inspect}"
       redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
