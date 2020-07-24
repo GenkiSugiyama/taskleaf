@@ -7,8 +7,9 @@ class TasksController < ApplicationController
   before_action :set_tasks, only: [:show, :edit, :update, :destroy]
 
   def index
-    # orderメソッドでORDER BY節を生成し作成日時の新しい順に並べる
-    @tasks = current_user.tasks.order(created_at: :desc)
+    # ransackを用いて検索機能を追加する
+    @q = current_user.tasks.ransack(params[:q])
+    @tasks = @q.result(distinct: true)
   end
 
   def show

@@ -15,6 +15,20 @@ class Task < ApplicationRecord
   # 以下は作成日時の新しい順に並べるための絞り込み条件を「recent」という名前のscopeとして利用できる
   scope :recent, -> { order(created_at: :desc) }
 
+  # ransackで検索して良いカラムの範囲を制限する
+  # rancackの制限はStorngParametersを使っても同じような効果を得られるが
+  # 下記のようにransackable_attributesなどで制御するやり方が一般的
+
+  def self.ransackable_attributes(auth_object = nil)
+    #ransackable_attributesを上書きして検索対象として許可するカラムを指定する
+    %w[name created]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    # ransackable_associationsにからの配列を返すことで関連テーブルを検索対象から外す
+    []
+  end
+
   private
 
 # 検証用のメソッドはモデルクラス内でしか使わない（外部からは呼び出されない）
