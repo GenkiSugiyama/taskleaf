@@ -47,6 +47,11 @@ class TasksController < ApplicationController
       # task_mailer.rbで定義したcreation_emailメソッドを使ってメールを送る
       # deliver_nowは即時送信を行うためのメソッド
       TaskMailer.creation_email(@task).deliver_now
+
+      # タスク生成時にジョブを呼び出す
+      # setメソッドで実行タイミングを指定可能
+      SampleJob.set(wait_until: Date.tomorrow.noon).perform_later
+
       redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
     else
       render :new

@@ -78,3 +78,6 @@ gem 'ransack'
 
 # ページネーション用kaminari導入
 gem 'kaminari'
+
+#非同期処理ツールのsidekiq導入
+gem 'sidekiq', '~> 5.0'
