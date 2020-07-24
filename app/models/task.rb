@@ -15,13 +15,17 @@ class Task < ApplicationRecord
   # 以下は作成日時の新しい順に並べるための絞り込み条件を「recent」という名前のscopeとして利用できる
   scope :recent, -> { order(created_at: :desc) }
 
+  # 画像ファイルを添付可能にするための処理
+  # has_one_attachedで1つのタスクに1つの画像を紐付ける&紐付け多画像をTaskモデルからimageと呼ぶことを指定
+  has_one_attached :image
+
   # ransackで検索して良いカラムの範囲を制限する
   # rancackの制限はStorngParametersを使っても同じような効果を得られるが
   # 下記のようにransackable_attributesなどで制御するやり方が一般的
 
   def self.ransackable_attributes(auth_object = nil)
     #ransackable_attributesを上書きして検索対象として許可するカラムを指定する
-    %w[name created]
+    %w[name created_at]
   end
 
   def self.ransackable_associations(auth_object = nil)
