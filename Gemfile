@@ -75,3 +75,6 @@ gem 'rails_autolink'
 
 # 検索用のransack導入
 gem 'ransack'
+
+# ページネーション用kaminari導入
+gem 'kaminari'

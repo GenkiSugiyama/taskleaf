@@ -9,7 +9,8 @@ class TasksController < ApplicationController
   def index
     # ransackを用いて検索機能を追加する
     @q = current_user.tasks.ransack(params[:q])
-    @tasks = @q.result(distinct: true)
+    # perスコープで表示件数を指定することで1ページごとの表示件数を変更できる
+    @tasks = @q.result(distinct: true).page(params[:page]).per(50)
 
     # indexアクション内にcsv出力機能を用意する
     respond_to do |format|
