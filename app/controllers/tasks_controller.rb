@@ -68,7 +68,10 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: "タスク「#{@task.name}」を削除しました。"
+    # 画面処理はAjaxで行うのでサーバーサイド側で画面の再表示は不要となるのでredirect_toは削除
+    # headメソッドで削除後はレスポンスボディなしでHTTPステータス204（成功）が買えるよう記述（サーバーから返されるイベントによってフロント側でJSを発火）
+    # head :no_content
+    # サーバー側からJSのコードを返すので↑コメントアウト
   end
 
   # csvインポート用のアクションを追加

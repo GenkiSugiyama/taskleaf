@@ -81,3 +81,6 @@ gem 'kaminari'
 
 #非同期処理ツールのsidekiq導入
 gem 'sidekiq', '~> 5.0'
+
+# webpacker導入
+gem 'webpacker'
