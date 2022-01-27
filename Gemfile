@@ -80,7 +80,7 @@ gem 'ransack'
 gem 'kaminari'
 
 #非同期処理ツールのsidekiq導入
-gem 'sidekiq', '~> 5.0'
+gem 'sidekiq', '~> 6.4'
 
 # webpacker導入
 gem 'webpacker'
